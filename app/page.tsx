@@ -9,7 +9,7 @@ import {
   Snowflake,
   Wifi,
   Zap,
-  Home,
+  HomeIcon,
   ArrowUpDown,
   Clock,
   Settings,
@@ -36,7 +36,7 @@ export default function Home() {
         <div className="container flex h-16 items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/15">
-              <Home className="h-5 w-5 text-primary" />
+              <HomeIcon className="h-5 w-5 text-primary" />
             </div>
             <div>
               <h1 className="text-lg font-semibold tracking-tight">Home Control</h1>
