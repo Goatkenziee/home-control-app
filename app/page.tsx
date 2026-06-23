@@ -11,7 +11,6 @@ import {
   Zap,
   HomeIcon,
   ArrowUpDown,
-  Clock,
   Settings,
   RefreshCw,
   Power,
@@ -136,38 +135,45 @@ export default function Home() {
                     {device.power ? ` · ${device.power}W` : ""}
                   </p>
                   {device.thermostatSettings && (
-                    <div className="mt-2 flex items-center gap-3 text-sm">
+                    <div className="mt-2 flex items-center gap-3 text-xs">
                       <span className="flex items-center gap-1">
-                        <Thermometer className="h-3.5 w-3.5 text-orange-400" />
+                        <Thermometer className="h-3 w-3" />
                         {device.thermostatSettings.currentTemp}°F
                       </span>
-                      <span className="text-muted-foreground">→</span>
-                      <span className="flex items-center gap-1">
-                        <ArrowUpDown className="h-3.5 w-3.5 text-blue-400" />
-                        {device.thermostatSettings.targetTemp}°F
-                      </span>
-                      <span className="text-xs text-muted-foreground uppercase">{device.thermostatSettings.mode}</span>
+                      <span className="text-muted-foreground">Target: {device.thermostatSettings.targetTemp}°F</span>
+                      <span className="text-muted-foreground">{device.thermostatSettings.mode}</span>
                     </div>
                   )}
-                  {device.type === "light" && device.brightness !== undefined && (
+                  {device.type === "light" && (
                     <div className="mt-2 flex items-center gap-2">
-                      <div className="h-1.5 flex-1 rounded-full bg-muted overflow-hidden">
-                        <div
-                          className="h-full rounded-full bg-primary transition-all"
-                          style={{ width: `${device.brightness}%` }}
-                        />
+                      <div className="flex gap-0.5">
+                        {[1, 2, 3, 4, 5].map((level) => (
+                          <div
+                            key={level}
+                            className={`h-2 w-2 rounded-sm ${
+                              device.brightness && level <= device.brightness / 20
+                                ? "bg-yellow-400"
+                                : "bg-muted"
+                            }`}
+                          />
+                        ))}
                       </div>
-                      <span className="text-xs text-muted-foreground w-8 text-right">{device.brightness}%</span>
+                      <span className="text-xs text-muted-foreground">{device.brightness}%</span>
                     </div>
                   )}
                 </div>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className={`h-8 w-8 shrink-0 ${device.isOn ? "text-primary" : "text-muted-foreground"}`}
-                >
-                  <Power className="h-4 w-4" />
-                </Button>
+                <div className="flex flex-col items-center gap-1.5">
+                  <Button
+                    variant={device.isOn ? "default" : "outline"}
+                    size="icon"
+                    className="h-8 w-8"
+                  >
+                    <Power className="h-4 w-4" />
+                  </Button>
+                  <span className="text-[10px] text-muted-foreground">
+                    {device.isOn ? "On" : "Off"}
+                  </span>
+                </div>
               </Card>
             ))}
           </div>
