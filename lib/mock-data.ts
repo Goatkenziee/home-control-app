@@ -1,0 +1,148 @@
+import { Device, DashboardSummary } from "./types";
+
+export const devices: Device[] = [
+  {
+    id: "t1",
+    name: "Living Room Thermostat",
+    type: "thermostat",
+    status: "online",
+    room: "Living Room",
+    isOn: true,
+    lastSeen: new Date().toISOString(),
+    thermostatSettings: {
+      targetTemp: 72,
+      currentTemp: 70,
+      humidity: 45,
+      mode: "cool",
+      fanMode: "auto",
+      scheduleEnabled: true,
+    },
+  },
+  {
+    id: "l1",
+    name: "Ceiling Lights",
+    type: "light",
+    status: "online",
+    room: "Living Room",
+    isOn: true,
+    brightness: 80,
+    power: 12,
+    lastSeen: new Date().toISOString(),
+  },
+  {
+    id: "l2",
+    name: "Bedroom Lamp",
+    type: "light",
+    status: "online",
+    room: "Bedroom",
+    isOn: false,
+    brightness: 30,
+    power: 8,
+    lastSeen: new Date().toISOString(),
+  },
+  {
+    id: "a1",
+    name: "Window AC Unit",
+    type: "ac",
+    status: "online",
+    room: "Bedroom",
+    isOn: true,
+    power: 1500,
+    lastSeen: new Date().toISOString(),
+  },
+  {
+    id: "p1",
+    name: "Coffee Maker",
+    type: "plug",
+    status: "online",
+    room: "Kitchen",
+    isOn: false,
+    power: 0,
+    lastSeen: new Date().toISOString(),
+  },
+  {
+    id: "p2",
+    name: "Smart Plug - Desk",
+    type: "plug",
+    status: "online",
+    room: "Office",
+    isOn: true,
+    power: 65,
+    lastSeen: new Date().toISOString(),
+  },
+  {
+    id: "f1",
+    name: "Bathroom Fan",
+    type: "fan",
+    status: "online",
+    room: "Bathroom",
+    isOn: false,
+    power: 30,
+    lastSeen: new Date().toISOString(),
+  },
+  {
+    id: "s1",
+    name: "Front Door Sensor",
+    type: "sensor",
+    status: "online",
+    room: "Entryway",
+    isOn: true,
+    lastSeen: new Date().toISOString(),
+  },
+  {
+    id: "t2",
+    name: "Office Thermostat",
+    type: "thermostat",
+    status: "offline",
+    room: "Office",
+    isOn: false,
+    lastSeen: new Date(Date.now() - 3600000).toISOString(),
+    thermostatSettings: {
+      targetTemp: 74,
+      currentTemp: 78,
+      humidity: 50,
+      mode: "off",
+      fanMode: "auto",
+      scheduleEnabled: false,
+    },
+  },
+  {
+    id: "l3",
+    name: "Kitchen Under-cabinet",
+    type: "light",
+    status: "error",
+    room: "Kitchen",
+    isOn: false,
+    brightness: 0,
+    power: 0,
+    lastSeen: new Date(Date.now() - 7200000).toISOString(),
+  },
+];
+
+export function getDashboardSummary(): DashboardSummary {
+  const online = devices.filter((d) => d.status === "online");
+  const active = devices.filter((d) => d.isOn);
+  const totalPower = active.reduce((s, d) => s + (d.power || 0), 0);
+  const dailyKwh = (totalPower * 8) / 1000; // assume 8h active
+
+  return {
+    totalDevices: devices.length,
+    onlineDevices: online.length,
+    activeDevices: active.length,
+    energy: {
+      today: dailyKwh,
+      week: dailyKwh * 7,
+      month: dailyKwh * 30,
+      costToday: dailyKwh * 0.14,
+      costMonth: dailyKwh * 30 * 0.14,
+    },
+    rooms: [
+      { id: "r1", name: "Living Room", icon: "🛋️", deviceCount: 2 },
+      { id: "r2", name: "Bedroom", icon: "🛏️", deviceCount: 2 },
+      { id: "r3", name: "Kitchen", icon: "🍳", deviceCount: 2 },
+      { id: "r4", name: "Office", icon: "💻", deviceCount: 2 },
+      { id: "r5", name: "Bathroom", icon: "🚿", deviceCount: 1 },
+      { id: "r6", name: "Entryway", icon: "🚪", deviceCount: 1 },
+    ],
+  };
+}
