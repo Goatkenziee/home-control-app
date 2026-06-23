@@ -1,30 +1,33 @@
-export type DeviceType = "thermostat" | "light" | "plug" | "switch" | "fan" | "ac" | "sensor";
-
+export type DeviceType = "light" | "plug" | "switch" | "thermostat" | "fan" | "ac" | "sensor";
 export type DeviceStatus = "online" | "offline" | "error";
-
-export type HvacMode = "heat" | "cool" | "auto" | "off";
+export type PowerState = "on" | "off";
 
 export interface ThermostatSettings {
-  targetTemp: number;
+  mode: "heat" | "cool" | "auto" | "off";
   currentTemp: number;
-  humidity: number;
-  mode: HvacMode;
-  fanMode: "auto" | "on" | "circulate";
-  scheduleEnabled: boolean;
+  targetTemp: number;
+  humidity?: number;
+  fanMode?: "auto" | "on" | "circulate";
+  scheduleEnabled?: boolean;
 }
 
 export interface Device {
   id: string;
   name: string;
   type: DeviceType;
-  status: DeviceStatus;
   room: string;
+  status: DeviceStatus;
   isOn: boolean;
-  power?: number; // watts
-  lastSeen: string;
+  power?: number; // wattage
+  brightness?: number;       // 0–100 for dimmable lights
+  color?: string;            // hex color for smart bulbs
+  temperature?: number;      // for thermostat
+  targetTemp?: number;
+  level?: number;            // 0–100 for fan speed
+  lastSeen: string;          // ISO timestamp
+  ipAddress?: string;
+  manufacturer?: string;
   thermostatSettings?: ThermostatSettings;
-  brightness?: number; // 0-100 for lights
-  color?: string; // hex for smart lights
 }
 
 export interface Room {
@@ -34,8 +37,25 @@ export interface Room {
   deviceCount: number;
 }
 
-export interface EnergyStats {
-  today: number; // kWh
+export interface Scene {
+  id: string;
+  name: string;
+  icon: string;
+  deviceStates: { deviceId: string; power: PowerState; brightness?: number; color?: string }[];
+}
+
+export interface Schedule {
+  id: string;
+  name: string;
+  deviceId: string;
+  action: "on" | "off";
+  time: string; // HH:MM
+  days: number[]; // 0=Sun, 1=Mon...
+  active: boolean;
+}
+
+export interface EnergyUsage {
+  today: number;
   week: number;
   month: number;
   costToday: number;
@@ -43,9 +63,12 @@ export interface EnergyStats {
 }
 
 export interface DashboardSummary {
-  totalDevices: number;
   onlineDevices: number;
+  totalDevices: number;
   activeDevices: number;
-  energy: EnergyStats;
+  energy: EnergyUsage;
   rooms: Room[];
 }
+
+export type SortOption = "name" | "room" | "type" | "status";
+export type FilterType = DeviceType | "all";
