@@ -15,18 +15,19 @@ const sizes: Record<ButtonSize, string> = {
   icon: "h-9 w-9",
 };
 
-export const Button = React.forwardRef<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement> & { variant?: Variant; size?: ButtonSize }>(
-  ({ className, variant = "default", size = "default", ...props }, ref) => (
-    <button
-      ref={ref}
-      className={cn(
-        "inline-flex items-center justify-center rounded-lg text-sm font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:opacity-50",
-        variants[variant],
-        sizes[size],
-        className,
-      )}
-      {...props}
-    />
-  ),
-);
+export const Button = React.forwardRef<
+  HTMLButtonElement,
+  React.ButtonHTMLAttributes<HTMLButtonElement> & { variant?: Variant; size?: ButtonSize }
+>(({ className, variant = "default", size = "default", ...props }, ref) => (
+  <button
+    ref={ref}
+    className={cn(
+      "inline-flex items-center justify-center rounded-lg text-sm font-medium transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary disabled:opacity-50",
+      variants[variant],
+      sizes[size],
+      className,
+    )}
+    {...props}
+  />
+));
 Button.displayName = "Button";
