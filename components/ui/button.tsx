@@ -2,13 +2,14 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 
 type Variant = "default" | "ghost" | "outline";
+type ButtonSize = "default" | "sm" | "icon";
+
 const variants: Record<Variant, string> = {
   default: "bg-primary text-primary-foreground hover:opacity-90 glow",
   ghost: "bg-transparent hover:bg-muted text-foreground",
   outline: "border bg-transparent hover:bg-muted text-foreground",
 };
 
-type ButtonSize = "default" | "sm" | "icon";
 const sizes: Record<ButtonSize, string> = {
   default: "h-11 px-6",
   sm: "h-8 px-3 text-xs",

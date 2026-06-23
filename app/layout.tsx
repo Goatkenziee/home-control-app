@@ -3,7 +3,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Home Control",
-  description: "Smart home dashboard — control your thermostat and appliances",
+  description: "Control your Wi-Fi home devices from your browser",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
