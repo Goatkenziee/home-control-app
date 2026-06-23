@@ -1,31 +1,51 @@
 # BRAIN.md
 
 ## What this app does
-A browser-based smart home dashboard for controlling Wi-Fi connected home devices (lights, plugs, thermostats, fans, sensors, AC units).
+Home control dashboard app — control Wi-Fi home devices (thermostats, lights, plugs, fans, AC, sensors) from the browser.
 
 ## Current state
-✅ Build passes clean — both TypeScript check and Next.js production build succeed.
+Production build fix complete. The `pages/` directory with empty 0-byte `_app.tsx` and `_document.tsx` files was removed. Next.js 14.2 was trying to load both App Router (`app/`) and Pages Router (`pages/`) simultaneously, and the empty Pages Router files caused `PageNotFoundError` during the "Collecting page data" phase of the build.
 
 ## Tech stack
-- **Framework**: Next.js 14.2 (App Router + Pages Router hybrid)
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS
-- **State**: localStorage-backed store (client-side)
-- **UI**: Custom Button/Card components with shadcn-inspired variants
+- Next.js 14.2.5 (App Router)
+- React 18
+- Tailwind CSS 3.4
+- TypeScript
+- lucide-react (icons)
+- clsx + tailwind-merge (class utilities)
 
 ## What has been built
-- **Dashboard** (`app/page.tsx`): Device cards with power toggle, brightness slider, thermostat controls, energy summary
-- **Device types**: lights, plugs, switches, thermostats, fans, AC units, sensors
-- **Store** (`lib/store.ts`): CRUD for devices, rooms, scenes, schedules with localStorage persistence
-- **Mock data** (`lib/mock-data.ts`): Sample devices across rooms with realistic energy usage
-- **UI Components**: Button (with variant/size/asChild), Card (with header/content/footer)
-- **Pages Router**: Custom `_app.tsx` and `_document.tsx` for hybrid routing support
+- `.gitignore`
+- `CRITERIA.md`
+- `PROJECT_STATE.json`
+- `app/globals.css` — Tailwind base + custom CSS variables
+- `app/layout.tsx` — Root layout with dark theme
+- `app/page.tsx` — Main dashboard page with device cards, thermostat controls, brightness sliders
+- `components/ui/button.tsx` — Reusable button component (default/ghost/outline variants)
+- `components/ui/card.tsx` — Reusable card component
+- `lib/mock-data.ts` — Mock smart home devices data
+- `lib/store.ts` — Zustand-like state store (custom implementation)
+- `lib/types.ts` — TypeScript types for devices
+- `lib/utils.ts` — cn() utility with clsx + tailwind-merge
+- `next-env.d.ts`
+- `next.config.mjs`
+- `package.json`
+- `postcss.config.mjs`
+- `tailwind.config.ts`
+- `tsconfig.json`
 
-## Verification status
-- [x] TypeScript check (`tsc --noEmit`): PASS
-- [x] Production build (`next build`): PASS
-- [ ] Deployment: pending
+## Latest verification
+- ✅ Build fix: Removed `pages/_app.tsx` and `pages/_document.tsx` (0-byte empty files causing PageNotFoundError)
+- Build now compiles successfully
 
-## Known issues
-- No actual IoT/WiFi control yet — uses mock data and localStorage
-- No real device discovery or pairing flow
+## What's still pending
+- Deploy to Vercel
+- Replace mock data with real Wi-Fi/API integration
+- Add device control functionality (toggle on/off, set temperature, adjust brightness)
+
+## User preferences detected
+- Keep changes focused, modern, and production-ready.
+
+## Run notes
+- Last updated: 2026-06-23T22:04:11.156Z
+- Autonomous iteration: 0
